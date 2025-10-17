@@ -1,0 +1,20 @@
+services:
+  bank-discovery-service:
+    #The docker file in scrum-app build the jar and provides the docker image with the following name.
+    build: ./discoveryService/discoveryService
+    container_name: bank-discovery-service
+    ports:
+      - '8761:8761'
+    expose:
+      - '8761'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+  bank-config-service:
+    build: ./config-service/config-service
+    container_name: bank-config-service
+    ports:
+      - '8888:8888'
+    expose:
+      - '8888'
+    depends_on:
+      - bank-discovery-service
